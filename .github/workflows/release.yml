@@ -1,0 +1,57 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: inotify-go/go.mod
+
+      - name: Test inotify-go
+        working-directory: inotify-go
+        run: go test ./...
+
+      - name: Check shell syntax
+        run: |
+          bash -n network_watcher/install.sh network_watcher/network-watcher.sh network_watcher/on-network-change.sh network_watcher/uninstall.sh
+          dash -n network_watcher/configure.sh
+
+      - name: Build inotify-go for linux/arm64 and linux/amd64
+        run: |
+          mkdir -p dist
+          cd inotify-go
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags='-s -w' -o ../dist/inotify-go-linux-arm64 .
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags='-s -w' -o ../dist/inotify-go-linux-amd64 .
+
+      - name: Create inotify-go tarballs
+        run: |
+          tar -czf dist/inotify-go-linux-arm64.tar.gz -C dist inotify-go-linux-arm64
+          tar -czf dist/inotify-go-linux-amd64.tar.gz -C dist inotify-go-linux-amd64
+          rm -f dist/inotify-go-linux-arm64 dist/inotify-go-linux-amd64
+
+      - name: Create network_watcher tarball
+        run: |
+          mkdir -p dist
+          tar -czf dist/network_watcher.tar.gz network_watcher
+
+      - name: Create GitHub release and upload artifacts
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            dist/inotify-go-linux-arm64.tar.gz
+            dist/inotify-go-linux-amd64.tar.gz
+            dist/network_watcher.tar.gz

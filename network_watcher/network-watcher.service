@@ -1,0 +1,20 @@
+[Unit]
+Description=Watch ubios-udapi-server state for network changes
+After=network.target unifi-core.service udapi-server.service ubntconf.service
+Wants=network.target
+StartLimitIntervalSec=120
+StartLimitBurst=3
+
+[Service]
+Type=simple
+# Backend availability (inotify-go or inotifywait) is checked inside the script,
+# which logs a clear error and exits non-zero if neither is present.
+ExecStart=/data/scripts/ipip/network-watcher.sh
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=network-watcher
+
+[Install]
+WantedBy=multi-user.target
