@@ -28,17 +28,17 @@ tar -xzf network_watcher.tar.gz
 tar -xzf inotify-go-linux-arm64.tar.gz
 ```
 
-`unifi.example`はゲートウェイのホスト名またはIPアドレスに置き換えてください。
+`unifi`はゲートウェイのホスト名またはIPアドレスに置き換えてください。
 
 ### 2. コピーしてインストールする
 
 ```sh
-ssh root@unifi.example 'mkdir -p /data/bin'
-scp inotify-go-linux-arm64 root@unifi.example:/data/bin/inotify-go
-scp -r network_watcher root@unifi.example:/tmp/
-ssh root@unifi.example 'chmod 755 /data/bin/inotify-go'
+ssh root@unifi 'mkdir -p /data/bin'
+scp inotify-go-linux-arm64 root@unifi:/data/bin/inotify-go
+scp -r network_watcher root@unifi:/tmp/
+ssh root@unifi 'chmod 755 /data/bin/inotify-go'
 
-ssh root@unifi.example
+ssh root@unifi
 cd /tmp/network_watcher
 ./install.sh
 ```
