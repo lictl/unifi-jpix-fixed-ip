@@ -2,6 +2,8 @@
 
 [日本語](README.ja.md) | [English](README.md)
 
+> **アーカイブのお知らせ:** UniFi OS 6.0 以降で動作する [UniFi Network 11.0.97](https://community.ui.com/releases/UniFi-Network-Application-11-0-97/15662d06-8122-44e2-a1ba-af5d71b8a045) で、日本の IPv4 over IPv6 サービス向けに IPIP WAN が標準対応となりました。JPIX の v6プラス固定IPサービスには、本スクリプトではなく UniFi の標準設定をご利用ください。以下の手順は旧環境向けの参考資料として残しています。
+
 UniFiゲートウェイによってJPIXの設定がMAP-Eに戻された際に、**v6プラス固定IP**の設定を自動的に再適用します。DHCP予約やLAN内の固定IPアドレスを設定するツールではありません。
 
 ## 使い方
