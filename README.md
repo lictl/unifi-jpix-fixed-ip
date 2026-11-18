@@ -2,6 +2,8 @@
 
 [日本語](README.ja.md) | [English](README.md)
 
+> **Archived:** [UniFi Network 11.0.97](https://community.ui.com/releases/UniFi-Network-Application-11-0-97/15662d06-8122-44e2-a1ba-af5d71b8a045), which requires UniFi OS 6.0 or newer, added native IPIP WAN support for Japanese IPv4-over-IPv6 services. Use the built-in configuration for JPIX v6 Plus Fixed IP instead of installing this script. The instructions below are retained for older installations.
+
 Keeps JPIX **v6 Plus Fixed IP (V6プラス固定IP)** settings active on a UniFi gateway after
 UniFi resets them to MAP-E. This is not a DHCP reservation or LAN static-IP
 tool.
