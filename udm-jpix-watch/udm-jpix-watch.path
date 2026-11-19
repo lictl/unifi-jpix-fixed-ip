@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch the UniFi gateway configuration for JPIX endpoint changes
+RequiresMountsFor=/data/udapi-config/ubios-udapi-server
+
+[Path]
+PathChanged=/data/udapi-config/ubios-udapi-server/ubios-udapi-server.state
+Unit=udm-jpix-watch.service
+
+[Install]
+WantedBy=multi-user.target

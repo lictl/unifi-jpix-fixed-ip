@@ -2,11 +2,25 @@
 
 [日本語](README.ja.md) | [English](README.md)
 
-> **アーカイブのお知らせ:** UniFi OS 6.0 以降で動作する [UniFi Network 11.0.97](https://community.ui.com/releases/UniFi-Network-Application-11-0-97/15662d06-8122-44e2-a1ba-af5d71b8a045) で、日本の IPv4 over IPv6 サービス向けに IPIP WAN が標準対応となりました。JPIX の v6プラス固定IPサービスには、本スクリプトではなく UniFi の標準設定をご利用ください。以下の手順は旧環境向けの参考資料として残しています。
+> **旧 MAP-E 用スクリプトについて:** UniFi OS 6.0 以降で動作する [UniFi Network 11.0.97](https://community.ui.com/releases/UniFi-Network-Application-11-0-97/15662d06-8122-44e2-a1ba-af5d71b8a045) で、日本の IPv4 over IPv6 サービス向けに IPIP WAN が標準対応となりました。JPIX の v6プラス固定IPサービスには、本スクリプトではなく UniFi の標準設定をご利用ください。以下の手順は旧環境向けの参考資料として残しています。
 
 UniFiゲートウェイによってJPIXの設定がMAP-Eに戻された際に、**v6プラス固定IP**の設定を自動的に再適用します。DHCP予約やLAN内の固定IPアドレスを設定するツールではありません。
 
-## 使い方
+## UniFi OS 6 の標準 JPIX IPIP 接続
+
+標準の v6プラス固定IP接続で、設定保存後にトンネルのローカル IPv6 `/128` が WAN の管理アドレス一覧から消える場合は、専用の `udm-jpix-watch` を利用できます。UDM-SE（UniFi OS 6.0.17、Network 11.0.99、WAN は `eth9`、トンネルは `ip6tnl1`）で、設定変更を検知してアドレスを再登録し、カーネルへの反映まで確認しました。
+
+`udm-jpix-watch.tar.gz` を展開するか、このリポジトリの同名ディレクトリをゲートウェイにコピーしてください。ゲートウェイ上で `ip -6 tunnel show ip6tnl1` の `local` に表示されるアドレスを確認し、末尾に `/128` を付けて指定します。以下はパッケージのディレクトリで実行します。
+
+```sh
+endpoint='2001:db8:1234:5678::42/128'  # ご自身のトンネルの値に置き換えてください
+python3 -IB reconcile.py check "$endpoint"
+./install.sh "$endpoint"
+```
+
+起動時と UniFi の state ファイル更新時にゲートウェイ自身が確認します。ログは `journalctl -u udm-jpix-watch.service` で確認できます。登録を取り消すには、`/data/scripts/udm-jpix-watch` で `python3 -IB reconcile.py revert` を実行します。自動修復も一時停止します。[動作条件・一時停止・アンインストールの詳細（英語）](udm-jpix-watch/README.md)
+
+## 旧 MAP-E 環境での使い方
 
 JPIX MAP-Eが設定済みのUniFiゲートウェイ、v6プラス固定IPの接続情報、およびroot権限でのSSHアクセスが必要です。`jq`、`flock`、`ubios-udapi-client`は通常UDMにインストールされています。
 

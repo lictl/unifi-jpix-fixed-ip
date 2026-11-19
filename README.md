@@ -2,13 +2,17 @@
 
 [日本語](README.ja.md) | [English](README.md)
 
-> **Archived:** [UniFi Network 11.0.97](https://community.ui.com/releases/UniFi-Network-Application-11-0-97/15662d06-8122-44e2-a1ba-af5d71b8a045), which requires UniFi OS 6.0 or newer, added native IPIP WAN support for Japanese IPv4-over-IPv6 services. Use the built-in configuration for JPIX v6 Plus Fixed IP instead of installing this script. The instructions below are retained for older installations.
+> **Legacy MAP-E workaround:** [UniFi Network 11.0.97](https://community.ui.com/releases/UniFi-Network-Application-11-0-97/15662d06-8122-44e2-a1ba-af5d71b8a045), which requires UniFi OS 6.0 or newer, added native IPIP WAN support for Japanese IPv4-over-IPv6 services. Use the built-in configuration for JPIX v6 Plus Fixed IP instead of installing this script. The instructions below are retained for older installations.
 
 Keeps JPIX **v6 Plus Fixed IP (V6プラス固定IP)** settings active on a UniFi gateway after
 UniFi resets them to MAP-E. This is not a DHCP reservation or LAN static-IP
 tool.
 
-## How to use
+## Native JPIX IPIP on UniFi OS 6
+
+If saving network settings erases the tunnel’s local IPv6 `/128` from the WAN address list, the gateway can restore that entry at boot and after configuration changes. This optional package was tested on UDM-SE with UniFi OS 6.0.17 and Network 11.0.99, using `eth9` and `ip6tnl1`. [Installation, logs and rollback](udm-jpix-watch/README.md)
+
+## Legacy MAP-E installation
 
 You need a UniFi gateway with JPIX MAP-E already configured, JPIX Fixed IP
 credentials, and root SSH access. `jq`, `flock`, and `ubios-udapi-client` are

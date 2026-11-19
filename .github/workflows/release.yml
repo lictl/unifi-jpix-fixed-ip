@@ -30,6 +30,11 @@ jobs:
           bash -n network_watcher/install.sh network_watcher/network-watcher.sh network_watcher/on-network-change.sh network_watcher/uninstall.sh
           dash -n network_watcher/configure.sh
 
+      - name: Check native IPIP watcher
+        run: |
+          dash -n udm-jpix-watch/install.sh
+          python3 -B -m unittest discover -s tests
+
       - name: Build inotify-go for linux/arm64 and linux/amd64
         run: |
           mkdir -p dist
@@ -43,10 +48,13 @@ jobs:
           tar -czf dist/inotify-go-linux-amd64.tar.gz -C dist inotify-go-linux-amd64
           rm -f dist/inotify-go-linux-arm64 dist/inotify-go-linux-amd64
 
-      - name: Create network_watcher tarball
+      - name: Package both gateway watchers
         run: |
           mkdir -p dist
           tar -czf dist/network_watcher.tar.gz network_watcher
+          cp -R udm-jpix-watch dist/udm-jpix-watch
+          cp LICENSE dist/udm-jpix-watch/
+          tar -czf dist/udm-jpix-watch.tar.gz -C dist udm-jpix-watch
 
       - name: Create GitHub release and upload artifacts
         uses: softprops/action-gh-release@v3
@@ -55,3 +63,4 @@ jobs:
             dist/inotify-go-linux-arm64.tar.gz
             dist/inotify-go-linux-amd64.tar.gz
             dist/network_watcher.tar.gz
+            dist/udm-jpix-watch.tar.gz

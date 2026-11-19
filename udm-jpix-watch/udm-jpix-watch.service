@@ -1,0 +1,28 @@
+[Unit]
+Description=Check and restore the managed JPIX tunnel endpoint on eth9
+After=udapi-server.service
+RequiresMountsFor=/data/scripts/udm-jpix-watch /data/udapi-config/ubios-udapi-server
+
+[Service]
+Type=oneshot
+ExecStartPre=/usr/bin/sleep 5
+ExecStart=/usr/bin/python3 -IB /data/scripts/udm-jpix-watch/reconcile.py watch
+User=root
+RuntimeDirectory=udm-jpix-repair
+RuntimeDirectoryMode=0700
+RuntimeDirectoryPreserve=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectSystem=strict
+ProtectHome=yes
+RestrictAddressFamilies=AF_NETLINK AF_UNIX
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=udm-jpix-watch
+Restart=on-failure
+RestartSec=60s
+TimeoutStartSec=95s
+
+[Install]
+WantedBy=multi-user.target
