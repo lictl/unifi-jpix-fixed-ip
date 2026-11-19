@@ -12,6 +12,8 @@ tool.
 
 If saving network settings erases the tunnel’s local IPv6 `/128` from the WAN address list, the gateway can restore that entry at boot and after configuration changes. This optional package was tested on UDM-SE with UniFi OS 6.0.17 and Network 11.0.99, using `eth9` and `ip6tnl1`. [Installation, logs and rollback](udm-jpix-watch/README.md)
 
+A UDR7 user also reported brief, periodic IPv4 drops when the gateway removed an address on a MAP-E connection. [UDR7 MAP-E bug report on the UniFi Community](https://community.ui.com/questions/c903c123-a08d-43fa-b19d-4d4f62ff2bc4)
+
 ## Legacy MAP-E installation
 
 You need a UniFi gateway with JPIX MAP-E already configured, JPIX Fixed IP

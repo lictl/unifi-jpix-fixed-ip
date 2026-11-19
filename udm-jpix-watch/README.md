@@ -2,6 +2,8 @@
 
 Use this optional watcher if **native JPIX v6 Plus Fixed IP (IPIP)** is already working but the gateway periodically removes the tunnel's local IPv6 address from the WAN. On a UDM-SE running UniFi OS 6.0.17 and Network 11.0.99, that removal briefly interrupted IPv4 traffic. Adding the same address as a static IPv6 `/128` alongside the existing DHCPv6 entry stopped the observed removals over the next three prefix refreshes. Saving UniFi Network settings later erased the entry, and the gateway watcher restored it and verified it on the WAN.
 
+A UDR7 user reported a similar IPv4 interruption on MAP-E when the gateway removed an address. The observations above and the repair procedure below cover JPIX fixed IPv4 over IPIP. [UDR7 MAP-E bug report on the UniFi Community](https://community.ui.com/questions/c903c123-a08d-43fa-b19d-4d4f62ff2bc4)
+
 This version supports the observed layout, WAN `eth9` and tunnel `ip6tnl1`. It requires root access, systemd, Python 3.9+, iproute2 with JSON output, and `ubios-udapi-client`. UniFi must already have a working native `ipip_jpix` configuration with DHCPv6 prefix delegation. Install only this package for that setup. The repository's older `network_watcher` configures a different WAN mode.
 
 ## Install

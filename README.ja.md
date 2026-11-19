@@ -10,6 +10,8 @@ UniFiゲートウェイによってJPIXの設定がMAP-Eに戻された際に、
 
 標準の v6プラス固定IP接続で、設定保存後にトンネルのローカル IPv6 `/128` が WAN の管理アドレス一覧から消える場合は、専用の `udm-jpix-watch` を利用できます。UDM-SE（UniFi OS 6.0.17、Network 11.0.99、WAN は `eth9`、トンネルは `ip6tnl1`）で、設定変更を検知してアドレスを再登録し、カーネルへの反映まで確認しました。
 
+UDR7 の MAP-E 接続でも、ゲートウェイがアドレスを削除する際に IPv4 通信が周期的に途切れる事例が報告されています。[UniFi Community の UDR7 不具合報告](https://community.ui.com/questions/c903c123-a08d-43fa-b19d-4d4f62ff2bc4)
+
 `udm-jpix-watch.tar.gz` を展開するか、このリポジトリの同名ディレクトリをゲートウェイにコピーしてください。ゲートウェイ上で `ip -6 tunnel show ip6tnl1` の `local` に表示されるアドレスを確認し、末尾に `/128` を付けて指定します。以下はパッケージのディレクトリで実行します。
 
 ```sh
